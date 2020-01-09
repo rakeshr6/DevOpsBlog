@@ -1,0 +1,76 @@
+{% extends "Blog_new/base.html" %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+    <section class="blog_area section-gap single-post-area">
+        <div class="container box_1170">
+            <div class="row">
+                <div class="col-lg-8 mb-5">
+
+                    <style>#wrapper {width: 100px;}
+                    #wrapper .container {max-width: 50%; display: block;}</style>
+                    <div class="">
+                        <form method="post" novalidate>
+                            {% csrf_token %}
+
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+
+                            {% for field in form.visible_fields %}
+                                <div class="form-group">
+                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                    {{ field|add_class:'form-control' }}
+                                    {% for error in field.errors %}
+                                        <span class="help-block" style="color: red">{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success">
+                                    <span class="glyphicon glyphicon-ok"></span> Log in
+                                </button>
+                                <a href="{% url 'temp_home' %}" class="btn btn-outline-secondary">Cancel</a>
+                                <a href="{% url 'forget_password' %}" >Froget Password?</a>
+                            </div>
+                        </form></div>
+
+
+                </div>
+{% endblock %}
+{% block scripts %}
+    {{ block.super }}
+    <script>
+    $("#id_username").change(function () {
+      var username = $(this).val();
+        console.log(username);
+
+
+      $.ajax({
+        url: '{% url 'validate_username' %}',
+        data: {
+          'username': username
+        },
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+          if (data.is_taken === false) {
+              console.log("inside if condition");
+            alert("User with this username not found.");
+          }
+        }
+      });
+
+    });
+  </script>
+
+
+{% endblock %}
+{% block sidebar %}
+
+{% endblock %}
+{% block footer %}
+
+{% endblock %}

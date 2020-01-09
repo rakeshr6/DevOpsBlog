@@ -1,0 +1,90 @@
+
+{% extends 'Blog_new/base.html' %}
+{#{% load humanize %}#}
+{% load humanize_tag %}
+{% load static %}
+{% load widget_tweaks %}
+{% block styles %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/chatcss.css' %}">
+{% endblock %}
+{% block content %}
+    <section class="blog_area section-gap single-post-area">
+    <div class="container box_1170">
+    <div class="row">
+    <div class="col-lg-8 mb-5">
+        <div class="typography mb-5">
+            <h3>Inbox Messages</h3>
+        </div>
+
+{#           {{ i.sendfrom }}: {{ i.msg }} - {{ i.msg_date|naturalTimeDifference }}<br>#}
+
+
+
+                    <div class="mesgs">
+            {% for i in user_chats %}
+                <div class="msg_history float-left">
+
+                    <div class="incoming_msg float-left">
+
+                        <div class="incoming_msg_img float-left"> <img src="{{ i.sendfrom.profile.image.url }}"> </div>
+                        <div class="received_msg float-left">
+                            <div class="received_withd_msg float-left ml-5 mb-2">
+                                <p>{{ i.msg }}<br> <span style="color: indigo"> {{ i.msg_date|naturalTimeDifference }}</span></div></p>
+
+                        </div>
+
+                    </div>
+                 {% endfor %}
+{#                    {% for chtto in to_user%}#}
+{#                    <div class="incoming_msg float-right">#}
+{#                        <div class="incoming_msg_img float-right"> <img src="{{ chtto.sendfrom.profile.image.url }} " /> </div>#}
+{#                        <div class="received_msg float-right">#}
+{#                            <div class="received_withd_msg float-right">#}
+{#                                <p>{{ chtto.msg }}</p>#}
+{#                                <span class="time_date"> {{ chtto.msg_date }}</span></div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#                        {% endfor %}#}
+{#        {% endfor %}#}
+
+        <div class="col-lg-12 mb-5">
+            <form method="post">
+                {% csrf_token %}
+
+                {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
+
+                {% for field in form.visible_fields %}
+                    <div class="form-group">
+{#                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>#}
+                        {{ field|add_class:'form-control' }}
+                        {% for error in field.errors %}
+                            <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">
+                        <span class="glyphicon glyphicon-ok"></span> Send
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+{% block sidebar %}
+{% endblock %}
+
+
+
+
+
+
+
+

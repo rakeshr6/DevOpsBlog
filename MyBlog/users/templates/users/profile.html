@@ -1,0 +1,60 @@
+{% extends "Blog_new/base.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% block content %}
+    <section class="blog_area section-gap single-post-area">
+        <div class="container box_1170">
+            <div class="row">
+                <div class="col-lg-8 mb-5">
+
+                    <div class="content-section">
+                        <div class="media mb-4">
+                            <img class="rounded-circle account-img" src="{{ user.profile.image.url }}"width="200px"height="200px">
+                            <div class="media-body mt-5 ml-3">
+                                <h2 class="account-heading">{{ user.username }}</h2>
+                                <p class="text-secondary">{{ user.email }}</p>
+                            </div>
+                        </div>
+
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            {% for hidden in u_form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                            {% for field in u_form.visible_fields %}
+                                <div class="form-group">
+                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                    {{ field|add_class:'form-control' }}
+                                    {% for error in field.errors %}
+                                        <span class="help-block">{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                            {% for hidden in p_from.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                            {% for field in p_from.visible_fields %}
+                                <div class="form-group">
+                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                    {{ field|add_class:'form-control' }}
+                                    {% for error in field.errors %}
+                                        <span class="help-block">{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success">
+                                    <span class="glyphicon glyphicon-ok"></span> Save
+                                </button>
+                                <a href="{% url 'temp_home' %}" class="btn btn-outline-secondary">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+{% endblock content %}
+{% block sidebar %}
+
+{% endblock %}

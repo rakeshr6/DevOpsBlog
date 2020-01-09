@@ -1,0 +1,476 @@
+{% extends 'Blog_new/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block banner %}
+
+    <!-- Start banner Area -->
+    <section class="banner-area relative">
+        <div class="overlay overlay-bg"></div>
+        <div class="container box_1170">
+            <div class="row d-flex align-items-center justify-content-center">
+                <div class="about-content col-lg-12">
+                    <h1 class="text-white">
+                        Blog Post Details
+                    </h1>
+                    <p class="text-white link-nav"><a href="{% url 'temp_home' %}">Home </a> <span class="lnr lnr-arrow-right"></span>
+                        <a href="#"> Blog Details</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End banner Area -->
+
+{% endblock %}
+
+
+
+{% block content %}
+
+    <section class="blog_area section-gap single-post-area">
+    <div class="container box_1170">
+    <div class="row">
+    <div class="col-lg-8 mb-5">
+        <div class="main_blog_details">
+            <img  src="{{ object.img.url }}" width="700" height="350" alt="">
+            <h4>{{ object.title }}</h4>
+            <blockquote class="blockquote">
+                <h5>Content</h5>
+                <p class="mb-0"> {{ object.content }}</p>
+            </blockquote>
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                {% for hidden_field in form.hidden_fields %}
+                    {{ hidden_field }}
+                {% endfor %}
+
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% for field in form.visible_fields %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+
+                        {% if form.is_bound %}
+                            {% if field.errors %}
+                                {% render_field field class="form-control is-invalid" %}
+                                {% for error in field.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                {% render_field field class="form-control is-valid" %}
+                            {% endif %}
+                        {% else %}
+                            {% render_field field class="form-control" %}
+                        {% endif %}
+
+                        {% if field.help_text %}
+                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                {% if user.is_authenticated %}
+                    <button type="submit" name="commentpost" class="btn btn-primary" id="comment_btn"><i class="fa fa-paper-plane-o">&nbsp;Send</i></button>
+                {% else %}
+                    <button class="btn btn-primary" href="{% url 'login' %}">Send</button>
+                {% endif %}
+            </form>
+            <div>
+                {% if object.author == user %}
+                    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'temp_post-update' object.id %}"><i class="fa fa-pencil"></i> Edit</a>
+                    <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'temp_post-delete' object.id %}"><i class="fa fa-trash-o"></i> Delete</a>
+                {% endif %}
+            </div>
+{#            <div class="news_d_footer">#}
+{#                <form method="post">#}
+{#                    {% csrf_token %}#}
+{#                    {% if is_liked %}#}
+{#                        <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-block btn-danger"><i class="fa fa-thumbs-down">&nbsp;UnLike</i>#}
+{#                            <span class="glyphicon glyphicon-thumbs-up"></span></button>#}
+{#                    {% else %}#}
+{#                        <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-block btn-primary"><i class="fa fa-thumbs-up">&nbsp;{{ likescount }}&nbsp;Like{{ likescount|pluralize }}</i>#}
+{#                        </button>#}
+{##}
+{#                    {% endif %}#}
+{#                </form>#}
+{#                &nbsp;&nbsp;<label><i class="lnr lnr lnr-heart"></i> {{ likescount }} people{{ likescount|pluralize }} like this</label>#}
+{#                &nbsp#}
+{#                <label class="justify-content-center ml-auto" href="#"><i class="lnr lnr lnr-bubble"></i>#}
+{#                    {{ commentcount }} Comment{{ commentcount|pluralize }}</label>#}
+{#            </div>#}
+{#            <hr>#}
+
+
+            <div class="news_d_footer" id="like_btn_id">
+                <form method="post">
+                    {% csrf_token %}
+                    {% if is_liked == False %}
+                        <div>
+                        <a class="btn btn-primary" id="btn-like" style="color: white" href="{% url 'api_post-like' object.pk %}" >  Like {{ likescount }}
+                            <span class="fa  fa-thumbs-o-up"></span></a></div>
+                    {% else %}
+                        <div>
+                        <a class="btn btn btn-danger" id="btn-like" style="color: white" href="{% url 'api_post-like' object.pk %}" >  UnLike {{ likescount }}
+                         <span class="fa  fa-thumbs-up" ></span></a></div>
+
+                    {% endif %}
+                </form>
+                &nbsp;&nbsp;<label><i class="lnr lnr lnr-heart"></i> {{ likescount }} people{{ likescount|pluralize }} like this</label>
+                &nbsp
+                <label class="justify-content-center ml-auto" href="#"><i class="lnr lnr lnr-bubble"></i>
+                    {{ commentcount }} Comment{{ commentcount|pluralize }}</label>
+            </div>
+            <hr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <div class="comments-area">
+            <h4>{{ post.approved_comments }} Comments</h4>
+            {% for comment in post.comments.all %}
+                {% if object.author == user %}
+                    {% if user.is_authenticated and comment.approved_comment%}
+                        <div class="comment-list">
+                            <div class="single-comment justify-content-between d-flex">
+                                <div class="user justify-content-between d-flex">
+                                    <div class="thumb">
+                                        <img src="{{ comment.author.profile.image.url }}" width="60px" height="60px" alt="">
+                                    </div>
+                                    <div class="desc">
+                                        <h5><a href="#">{{ comment.author }}</a></h5>
+                                        <p class="date">{{ comment.created_date }}</p>
+                                        <p class="comment">
+                                            {{ comment.text|linebreaks }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="reply-btn">
+                                    <a class="btn btn-outline-danger btn-sm"
+                                       href="{% url 'temp_comment_remove' pk=comment.pk %}"><i class="fa fa-ban"></i> Remove<span
+                                            class="glyphicon glyphicon-remove"></span></a>
+                                    <div class="panel-group" id="accordion1">
+                                        <a class="btn btn-outline-secondary" data-parent="#accordion1" data-toggle="collapse" href="#collapseExample{{ comment.pk}}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                            <i class="fa fa-reply"></i> Reply
+                                        </a>
+                                        <div class="collapse" id="collapseExample{{ comment.pk}}">
+                                            <div class="card card-body">
+                                                <form method="post">
+                                                    {% csrf_token %}
+                                                    {{ form2.as_p }}
+                                                    <input type="hidden" name="replyid" value="{{ comment.pk }}">
+                                                    <button type="submit" name ="replypost" class="btn btn-primary">Submit</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% for reply in comment.get_replay %}
+                            {% if user.is_authenticated and reply.approved_replay %}
+                                <div class="comment-list left-padding">
+                                    <div class="single-comment justify-content-between d-flex">
+                                        <div class="user justify-content-between d-flex">
+                                            <div class="thumb">
+                                                <img src="{{ reply.author.profile.image.url }}" width="60px" height="60px" alt="">
+                                            </div>
+                                            <div class="desc">
+                                                <h5><a href="#">{{ reply.author }}</a></h5>
+                                                <p class="date">{{ reply.created_date }} </p>
+                                                <p class="comment">
+                                                    {{ reply.Replay }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="reply-btn">
+                                            {% if post.author == user %}
+                                                <a class="btn btn-outline-danger btn-sm"
+                                                   href="{% url 'temp_reply_remove' pk=reply.pk %}"><i class="fa fa-ban"></i> Remove<span
+                                                        class="glyphicon glyphicon-remove"></span></a>
+                                                {% if reply.author == user %}
+                                                    <a class="btn btn-outline-primary btn-sm"
+                                                       href="{% url 'temp_replay_update' pk_2=comment.pk pk_1=post.pk pk=reply.pk %}"><i class="fa fa-pencil"></i> Edit</a>
+                                                {% endif %}
+                                            {% endif %}
+                                            <a class="btn btn-outline-secondary"  data-toggle="collapse" href="#collapse1{{ reply.pk}}" role="button" aria-expanded="false" aria-controls="collapse1">
+                                                <i class="fa fa-reply"></i> Reply</a>
+                                            <div class="collapse" id="collapse1{{ reply.pk }}">
+                                                <div class="card card-body">
+                                                    <form method="post">
+                                                        {% csrf_token %}
+                                                        {{ form2.as_p }}
+                                                        <input type="hidden" name="replyid" value="{{ comment.pk }}">
+                                                        <button type="submit" name ="replypost" class="btn btn-primary">Submit</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% elif reply.approved_replay == False %}
+                                <div class="comment-list left-padding">
+                                    <div class="single-comment justify-content-between d-flex">
+                                        <div class="user justify-content-between d-flex">
+                                            <div class="thumb">
+                                                <img src="{{ reply.author.profile.image.url }}" width="60px" height="60px" alt="">
+                                            </div>
+                                            <div class="desc">
+                                                <h5><a href="#">{{ reply.author }}</a></h5>
+                                                <p class="date">{{ reply.created_date }} </p>
+                                                <p class="comment">
+                                                    {{ reply.Replay }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="reply-btn">
+                                            <a class="btn btn-outline-success btn-sm"
+                                               href="{% url 'temp_reply_approve' pk=reply.pk %}"><i class="fa fa-thumbs-o-up"></i> Approve<span
+                                                    class="glyphicon glyphicon-ok"></span></a>
+                                            <a class="btn btn-outline-danger btn-sm" href="{% url 'temp_reply_remove' pk=reply.pk %}"><i class="fa fa-ban"></i> Remove<span
+                                                    class="glyphicon glyphicon-remove"></span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% elif comment.approved_comment == False %}
+                        <div class="comment-list">
+                            <div class="single-comment justify-content-between d-flex">
+                                <div class="user justify-content-between d-flex">
+                                    <div class="thumb">
+                                        <img src="{{ comment.author.profile.image.url }}" width="60px" height="60px" alt="">
+                                    </div>
+                                    <div class="desc">
+                                        <h5><a href="#">{{ comment.author }}</a></h5>
+                                        <p class="date">{{ comment.created_date }} </p>
+                                        <p class="comment">
+                                            {{ comment.text|linebreaks }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="reply-btn">
+                                    <a class="btn btn-outline-success btn-sm"
+                                       href="{% url 'temp_comment_approve' pk=comment.pk %}"><i class="fa fa-thumbs-o-up"></i> Approve<span
+                                            class="glyphicon glyphicon-ok"></span></a>
+                                    <a class="btn btn-outline-danger btn-sm"
+                                       href="{% url 'temp_comment_remove' pk=comment.pk %}"><i class="fa fa-ban"></i> Remove<span
+                                            class="glyphicon glyphicon-remove"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% elif comment.approved_comment == True %}
+                    <div class="comment-list">
+                        <div class="single-comment justify-content-between d-flex">
+                            <div class="user justify-content-between d-flex">
+                                <div class="thumb">
+                                    <img src="{{ comment.author.profile.image.url }}" width="60px" height="60px" alt="">
+                                </div>
+                                <div class="desc">
+                                    <h5><a href="#">{{ comment.author }}</a></h5>
+                                    <p class="date">{{ comment.created_date }} </p>
+                                    <p class="comment">
+                                        {{ comment.text|linebreaks }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="reply-btn">
+                                {% if comment.author == user %}
+                                    <a class="btn btn-outline-success btn-sm"
+                                       href="{% url 'temp_update_comment_to_post' pk=comment.pk pk_1=post.pk %}">
+                                        <i class="fa fa-pencil"></i> Update</a>
+                                    <a class="btn btn-outline-danger btn-sm"
+                                       href="{% url 'temp_delete_comment_to_post' pk=comment.pk %}"><i class="fa fa-trash-o"></i> Delete</a>
+                                {% endif %}
+                                <a class="btn btn-outline-secondary" data-toggle="collapse" href="#collapse2{{ comment.pk }}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                    <i class="fa fa-reply"></i> Reply
+                                </a>
+                                <div class="collapse" id="collapse2{{ comment.pk }}">
+                                    <div class="card card-body">
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            {{ form2.as_p }}
+                                            <input type="hidden" name="replyid" value="{{ comment.pk }}">
+                                            <button type="submit" name ="replypost" class="btn btn-primary">Submit</button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    {% for reply in comment.get_replay %}
+                        {% if reply.approved_replay == True %}
+                            <div class="comment-list left-padding">
+                                <div class="single-comment justify-content-between d-flex">
+                                    <div class="user justify-content-between d-flex">
+                                        <div class="thumb">
+                                            <img src="{{ reply.author.profile.image.url }}" width="60px" height="60px" alt="">
+                                        </div>
+                                        <div class="desc">
+                                            <h5><a href="#">{{ reply.author }}</a></h5>
+                                            <p class="date">{{ reply.created_date }} </p>
+                                            <p class="comment">
+                                                {{ reply.Replay }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="reply-btn">
+                                        {% if reply.author == user %}
+                                            <a class="btn btn-outline-success btn-sm" href="
+                                            {% url 'temp_replay_update' pk_2=comment.pk pk_1=post.pk pk=reply.pk %}"><i class="fa fa-pencil"></i> Edit</a>
+                                            <a class="btn btn-outline-danger btn-sm"
+                                               href="{% url 'temp_replay_delete' pk=reply.pk %}"><i class="fa fa-trash-o"></i> Delete</a>
+                                        {% endif %}
+                                        <a class="btn btn-outline-secondary" data-toggle="collapse" href="#collapse3{{ reply.pk}}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                            <i class="fa fa-reply"></i> Reply
+                                        </a>
+                                        <div class="collapse" id="collapse3{{ reply.pk}}">
+                                            <div class="card card-body">
+                                                <form method="post">
+                                                    {% csrf_token %}
+                                                    {{ form2.as_p }}
+                                                    <input type="hidden" name="replyid" value="{{ comment.pk }}">
+                                                    <button type="submit" name ="replypost" class="btn btn-primary">Submit</button>
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% empty %}
+                <p>No comments here yet :(</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+{% block sidebar %}
+    <div class="col-lg-4 sidebar">
+        <div class="single-widget protfolio-widget">
+            <img src="{{ post.author.profile.image.url }}" width="300" height="310" alt="">
+            <a href="#">
+                <h4>{{ post.author }}</h4>
+            </a>
+            <p class="p-text">
+                {{ post.author.profile.about }}
+            </p>
+            <ul class="social-links mt-2">
+                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                <li><a href="#"><i class="fa fa-behance"></i></a></li>
+            </ul>
+            <img src="{% static 'img/sign.png' %}" alt="">
+        </div>
+    </div>
+    </div>
+
+    </section>
+{% endblock %}
+{% block scripts %}
+    {{ block.super }}
+    {#    <script src="{% static 'js/custom.js' %}"></script>#}
+{#    <script>#}
+{#    function  scrollWin() {#}
+{#        window.scrollTo(1000, 10000);#}
+{#        console.log("inside scroll")#}
+{##}
+{##}
+{#    }#}
+{#    document.getElementById("comment_btn").addEventListener("click", scrollWin);#}
+{#    </script>#}
+
+
+{#    <script>#}
+{#    window.addEventListener('scroll', () =>{#}
+{##}
+{#        const scrollable = 0;#}
+        {#const scrollable = document.documentElement.scrollHeight - window.innerHeight;#}
+{#        const scrolled = window.scrollY;#}
+{#        console.log(scrolled);#}
+{##}
+{#        if (Math.ceil(scrolled) === scrollable) {#}
+{#            alert("reached")#}
+{#        }#}
+{#    });#}
+{#    </script>#}
+
+
+    <script>
+    function updatedtext(btn, newcount, verb){
+        btn.text(newcount + " "  + verb)
+    }
+    $("#btn-like").click(function (e) {
+        e.preventDefault();
+        var this_ = $(this);
+        var likeurl = this_.attr("href");
+        $.ajax({
+            url: likeurl,
+            method: "GET",
+            data: {},
+            success: function (data) {
+                console.log(data.like_count);
+                if (data.liked){
+                    $("#btn-like").removeClass("btn btn-primary").addClass("btn btn-danger");
+                    {#$(".fa").removeClass("fa-thumbs-up").addClass("fa-thumbs-o-up");#}
+                    {#function unlikefunction() {#}
+                    {#    console.log("inside unlike function");#}
+                    {#    $(".fa").removeClass("fa-thumbs-o-up").addClass("fa-thumbs-up");#}
+                    {##}
+
+                    {#$("#i-like-d").removeClass("fa fa-thumbs-o-up").addClass("fa fa-thumbs-up");#}
+                    {#$(this_).find('i').addClass("fa  fa-thumbs-o-up");#}
+                    updatedtext(this_, data.like_count, "Unlike ");
+
+                    {#var $MySpans = $(".news_d_footer>a>i");#}
+                    {#$MySpans.removeClass("fa  fa-thumbs-o-up");#}
+                    {#$(this).addClass("fa  fa-thumbs-o-up");#}
+
+                }
+                else {
+                    $("#btn-like").removeClass("btn btn-danger").addClass("btn btn-primary");
+
+                    {#$(".fa").removeClass("fa-thumbs-o-up").addClass("fa-thumbs-up");#}
+                    {#function likefunction() {#}
+                    {#    console.log("inside like function");#}
+                    {#    $(".fa").removeClass("fa-thumbs-o-up").addClass("fa-thumbs-up");#}
+                    {##}
+                    updatedtext(this_, data.like_count, "Like ")
+                }
+            }, error: function (error) {
+                console.log(error);
+                console.log("error")
+            }
+        })
+    });
+    </script>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "Blog_new/base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+    <section class="blog_area section-gap single-post-area">
+    <div class="container box_1170">
+    <div class="row">
+    <div class="col-lg-8 ">
+        <h3 style="color: dimgrey">Sign Up here</h3>
+        <form method="post" novalidate >
+            {% csrf_token %}
+
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+
+            {% for field in form.visible_fields %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field|add_class:'form-control' }}
+                    {% for error in field.errors %}
+                        <span class="help-block" style="color: red">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">
+                    <span class="glyphicon glyphicon-ok"></span> Save
+                </button>
+                <a href="{% url 'temp_home' %}" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Already Have An Account? <a class="ml-2" href="{% url 'login' %}">Sign In</a>
+            </small>
+        </div>
+    </div>
+{% endblock %}
+{% block sidebar %}
+
+{% endblock %}
+{% block footer %}
+
+{% endblock %}

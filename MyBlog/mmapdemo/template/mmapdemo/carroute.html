@@ -1,0 +1,162 @@
+
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<div class="embed-responsive embed-responsive-4by3">
+    <div id="mapdiv" class="embed-responsive-item"></div>
+</div>
+
+
+<script>
+
+
+    var mymap = L.map('mapdiv').setView([44.4294834,26.1002004], 11);
+
+    L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(mymap);
+
+
+    pointList = [];
+
+    var p = new L.LatLng(44.4294834,26.1002004);
+    pointList.push(p);
+    var p = new L.LatLng(44.4296068,26.0988593);
+    pointList.push(p);
+    var p = new L.LatLng(44.4297302,26.0975182);
+    pointList.push(p);
+    var p = new L.LatLng(44.4301164,26.0964561);
+    pointList.push(p);
+    var p = new L.LatLng(44.43132875,26.09514715);
+    pointList.push(p);
+    var p = new L.LatLng(44.4325411,26.0938382);
+    pointList.push(p);
+    var p = new L.LatLng(44.4331634,26.0927224);
+    pointList.push(p);
+    var p = new L.LatLng(44.4333994,26.0914671);
+    pointList.push(p);
+    var p = new L.LatLng(44.4335496,26.0893857);
+    pointList.push(p);
+    var p = new L.LatLng(44.43371055,26.08686445);
+    pointList.push(p);
+    var p = new L.LatLng(44.4338715,26.0843432);
+    pointList.push(p);
+    var p = new L.LatLng(44.436779,26.083281);
+    pointList.push(p);
+    var p = new L.LatLng(44.4391394,26.0821545);
+    pointList.push(p);
+    var p = new L.LatLng(44.441489,26.0811353);
+    pointList.push(p);
+    var p = new L.LatLng(44.4475293,26.082176);
+    pointList.push(p);
+    var p = new L.LatLng(44.4493532,26.0831952);
+    pointList.push(p);
+    var p = new L.LatLng(44.4515848,26.0845041);
+    pointList.push(p);
+    var p = new L.LatLng(44.4518852,26.0862315);
+    pointList.push(p);
+    var p = new L.LatLng(44.45948125,26.08261585);
+    pointList.push(p);
+    var p = new L.LatLng(44.4670773,26.0790002);
+    pointList.push(p);
+    var p = new L.LatLng(44.4708109,26.07681155);
+    pointList.push(p);
+    var p = new L.LatLng(44.4745445,26.0746229);
+    pointList.push(p);
+    var p = new L.LatLng(44.4774842,26.0731637);
+    pointList.push(p);
+    var p = new L.LatLng(44.4815505,26.0747731);
+    pointList.push(p);
+    var p = new L.LatLng(44.4834816,26.0759211);
+    pointList.push(p);
+    var p = new L.LatLng(44.4861102,26.0773587);
+    pointList.push(p);
+    var p = new L.LatLng(44.4887602,26.0786462);
+    pointList.push(p);
+    var p = new L.LatLng(44.4990492,26.0798156);
+    pointList.push(p);
+    var p = new L.LatLng(44.5051754,26.0815644);
+    pointList.push(p);
+    var p = new L.LatLng(44.5159471,26.0795152);
+    pointList.push(p);
+    var p = new L.LatLng(44.51901555,26.07705295);
+    pointList.push(p);
+    var p = new L.LatLng(44.522084,26.0745907);
+    pointList.push(p);
+    var p = new L.LatLng(44.52338755,26.07338905);
+    pointList.push(p);
+    var p = new L.LatLng(44.5246911,26.0721874);
+    pointList.push(p);
+    var p = new L.LatLng(44.5262039,26.0711253);
+    pointList.push(p);
+    var p = new L.LatLng(44.5299804,26.0696769);
+    pointList.push(p);
+    var p = new L.LatLng(44.5326197,26.0686469);
+    pointList.push(p);
+    var p = new L.LatLng(44.5659435,26.0696661);
+    pointList.push(p);
+    var p = new L.LatLng(44.5920897,26.0709858);
+    pointList.push(p);
+    var p = new L.LatLng(44.6058655,26.072005);
+    pointList.push(p);
+    var p = new L.LatLng(44.6143305,26.0703421);
+    pointList.push(p);
+    var p = new L.LatLng(44.6267653,26.0692048);
+    pointList.push(p);
+    var p = new L.LatLng(44.6366036,26.07080875);
+    pointList.push(p);
+    var p = new L.LatLng(44.6464419,26.0724127);
+    pointList.push(p);
+    var p = new L.LatLng(44.6475041,26.0736036);
+    pointList.push(p);
+    var p = new L.LatLng(44.6519566,26.0746229);
+    pointList.push(p);
+    var p = new L.LatLng(44.665786,26.0765326);
+    pointList.push(p);
+    var p = new L.LatLng(44.6699595,26.0753632);
+    pointList.push(p);
+    var p = new L.LatLng(44.6781188,26.0774982);
+    pointList.push(p);
+    var p = new L.LatLng(44.6862781,26.0796332);
+    pointList.push(p);
+    var p = new L.LatLng(44.6884024,26.0807812);
+    pointList.push(p);
+    var p = new L.LatLng(44.6923828,26.082927);
+    pointList.push(p);
+    var p = new L.LatLng(44.6951723,26.0844451);
+    pointList.push(p);
+
+    var routepolyline = new L.Polyline(pointList, {
+        color: 'blue',
+        weight: 5,
+        opacity: 0.5,
+        smoothFactor: 1
+    });
+    routepolyline.addTo(mymap);
+
+
+    var sec=0;
+    var caricon = L.icon({ iconUrl: 'https://www.freepngimg.com/thumb/car/75694-bird\'s-eye-car-top-view,plan-view-icon.png', iconSize: [32, 32] });
+    car=L.marker([44.4294834,26.1002004], {icon: caricon }).addTo(mymap);
+
+    timer=setInterval(
+        function() {
+            if(sec<pointList.length-1) {
+                sec++;
+                mymap.setView(pointList[sec], 11, { animation: true });
+                car.setLatLng(pointList[sec]);
+            }
+        }
+
+        ,300);
+
+
+</script>

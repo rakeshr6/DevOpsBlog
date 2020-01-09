@@ -1,0 +1,101 @@
+<!-- Start header Area -->
+
+<header id="header">
+    <div class="container box_1170 main-menu">
+        <div class="row align-items-center justify-content-center d-flex">
+            <nav id="nav-menu-container">
+                <ul class="nav-menu">
+                     <li><a class="nav-item nav-link" href="{% url 'temp_home' %}"><i class="fa fa-home"></i> Home</a></li>
+                    {% if user.is_authenticated %}
+                        <li class="menu-has-children"><a href=""><i class="fa fa-bell"></i>Notification  <span class="badge badge-danger pt-1 border "style= "font-size: larger">{{ notification_count }}</span></a>
+                            <ul>
+                                {% if comment_in_post or reply_comment %}
+                                    {% for i in comment_in_post %}
+                                        <li><a onclick="notificationclick({{ i.id }})" id="{{ i.id }}" href="{% url 'temp_post-detail' i.post %}"><i class="fa fa-bell"></i> {{ i.author__username }} commented '{{ i.text }}' in "{{ i.post__title }}"  </a></li>
+                                        <li><hr></li>
+                                    {% endfor %}
+
+                                    {% for j in reply_comment %}
+                                        <li><a onclick="replynotifyclick({{ j.id }})" href="{% url 'temp_post-detail' j.post_id %}"><i class="fa fa-bell"></i> {{ j.author }} replied '{{ j.Replay }}' in "{{ j.post }}"</a></li>
+                                        <li><hr></li>
+                                    {% endfor %}
+                                {% else %}
+                                    <li><a><i class="fa fa-bell"></i> No New Notifications</a></li>
+
+                                {% endif %}
+                            </ul>
+                        </li>
+                        <li><img class="rounded-circle " src="{{ user.profile.image.url }}"width="40"height="40">
+                            <h3 class="navbar-brand mr-4" > Hi : {{ user.first_name|upper}}</h3></li>
+                        <li><a class="nav-item nav-link" href="{% url 'temp_post-create' %}"><i class="fa fa-plus-square"></i> New Post</a></li>
+{#                        <li><a class="nav-item nav-link" href="{% url 'profile' %}"><i class="fa fa-address-card-o"></i> Profile</a></li>#}
+
+
+                         <li class="menu-has-children"><a href="{% url 'profile' %}"><i class="fa fa-address-card-o" ></i> Profile</a>
+                            <ul>
+                                        <li><a href="{% url 'activity_log' %}"><i class="fa fa-history"></i> Activity Log</a></li>
+                            </ul>
+                        </li>
+                        <li><a class="nav-item nav-link" href="{% url 'user_msg_list' %}"><i class="fa fa-address-card-o"></i> Messages</a></li>
+{#                        <li><a class="nav-item nav-link" href="{% url 'msg_list' %}"><i class="fa fa-address-card-o"></i> Messages</a></li>#}
+                        <li><a class="nav-item nav-link" href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Logout</a></li>
+                    {% else %}
+                        <li><a class="nav-item nav-link" href="{% url 'login' %}"><i class="fa fa-sign-in"></i> Login</a></li>
+
+                        <li><a class="nav-item nav-link" href="{% url 'register' %}">Register</a></li>
+                    {% endif %}
+{#                    <a class="nav-item nav-link" href="{% url 'temp_contact_create' %}"><i class="fa fa-phone-square"></i> Contact</a>#}
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+		<div class="search_input" id="search_input_box">
+			<div class="container box_1170">
+				<form class="d-flex justify-content-between">
+					<input type="text" class="form-control" id="search_input" placeholder="Search Here">
+					<button type="submit" class="btn"></button>
+					<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+				</form>
+			</div>
+		</div>
+	</header>
+	<!-- End header Area -->
+
+<script>
+    function ajaxfunction(id) {
+      $.ajax({
+        url: '{% url 'ajax_notification_comment' %}',
+        data: {
+          'comment_id': id
+        },
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);}
+      })
+    }
+
+
+    function ajaxreplyfunction(id) {
+        $.ajax({
+            url: '{% url 'ajax_notification_reply' %}',
+            data: {
+                'reply_id':id
+            },
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);}
+        })
+
+    }
+
+
+    function notificationclick(id) {
+        ajaxfunction(id);
+
+    }
+    function replynotifyclick(id) {
+        ajaxreplyfunction(id);
+
+    }
+</script>

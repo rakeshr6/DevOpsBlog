@@ -1,0 +1,110 @@
+
+{% extends 'Blog_new/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load humanize %}
+{% block styles %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/chatcss.css' %}">
+{% endblock %}
+{% block content %}
+    <section class="blog_area section-gap single-post-area">
+    <div class="container box_1170">
+    <div class="row">
+    <div class="col-lg-8 mb-5">
+
+    <div>
+        <div class="container mt-5 mb-5">
+            <div class="row">
+                <div class="col-md-12 offset-md-3">
+                    <h4>Recent Activities</h4>
+                    <ul class="timeline">
+                        {% if activity %}
+                            {% for i in activity %}
+                                <div>
+                                    <li>
+{#                                        {{ i.activity }} at {{ i.datetime }}<br>#}
+                                        <a class="label" style="color: blue">{{ i.activity }}</a>
+                                        <p>{{ i.datetime|naturaltime }}</p>
+                                    </li>
+                                </div>
+
+
+                            {% endfor %}
+                                </ul>
+                                </div>
+                                </div>
+                                </div>
+
+
+
+            {% if is_paginated %}
+                <div class="col-lg-12">
+                <nav class="blog-pagination justify-content-center d-flex">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a href="#" class="page-link" aria-label="Previous">
+												<span aria-hidden="true">
+													<span class="lnr lnr-arrow-left"></span>
+												</span>
+                            </a>
+                        </li>
+
+                        {% if page_obj.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+
+                        {% endif %}
+                        {% for num in page_obj.paginator.page_range %}
+
+                            {% if page_obj.number == num %}
+
+                                <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num}}</a></li>
+
+
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num}}</a></li>
+
+
+                            {% endif %}
+
+
+                        {% endfor %}
+
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
+
+                        {% endif %}
+                        <li class="page-item">
+                            <a href="#" class="page-link" aria-label="Next">
+												<span aria-hidden="true">
+													<span class="lnr lnr-arrow-right"></span>
+												</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            {% endif %}
+        {% else %}
+            No recent activities
+        {% endif %}
+
+    </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block sidebar %}
+
+{% endblock %}
+
+
+
+
+
+
+

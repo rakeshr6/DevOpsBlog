@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx" class="no-js" xmlns="http://www.w3.org/1999/html">
+
+<head>
+	<!-- Mobile Specific Meta -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Favicon-->
+{#	<link rel="shortcut icon" href="img/fav.png">#}
+	<link rel="shortcut icon" href="{% static 'img/rocky.png' %}">
+	<!-- Author Meta -->
+	<meta name="author" content="codepixer">
+	<!-- Meta Description -->
+	<meta name="description" content="">
+	<!-- Meta Keyword -->
+	<meta name="keywords" content="">
+	<!-- meta character set -->
+	<meta charset="UTF-8">
+	<!-- Site Title -->
+	<title>RoCkY Blog</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,500|Rubik:500" rel="stylesheet">
+	<!--
+			CSS
+			============================================= -->
+	{% block styles %}
+        {% include 'Blog_new/styles.html' %}
+    {% endblock %}
+</head>
+	<!--================ Start header Top Area =================-->
+	<section class="header-top ">
+		<div class="container box_1170">
+			<div class="row align-items-center justify-content-between">
+				<div class="col-lg-6 col-md-6 col-sm-6">
+					<a href="{% url 'temp_home' %}" class="logo">
+						<img src="{% static 'img/rocky.png' %}" width="150" height="130" alt="">
+					</a>
+				</div>
+{#				<div class="col-lg-6 col-md-6 col-sm-6 search-trigger">#}
+{#					<a href="#" class="search">#}
+{#						<i class="lnr lnr-magnifier" id="search"></i></a>#}
+{#					</a>#}
+{#				</div>#}
+			</div>
+		</div>
+	</section>
+{% block navbar %}
+
+    {% include 'Blog_new/header.html' %}
+
+{% endblock %}
+
+{#{% block topstory %}#}
+{##}
+{#    {% include 'Blog_new/top_story.html' %}#}
+{##}
+{#{% endblock %}#}
+
+{#{% block postslider %}#}
+{##}
+{#    {% include 'Blog_new/post_slider.html' %}#}
+{##}
+{#{% endblock %}#}
+{% block banner %}
+
+
+{% endblock %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% block content %}
+
+
+{% endblock %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+
+{% block sidebar %}
+    {% include 'Blog_new/sidebar.html' %}
+{% endblock %}
+</div>
+</div>
+</section>
+{% block footer %}
+    {% include 'Blog_new/footer.html' %}
+{% endblock %}
+{% block scripts %}
+    {% include 'Blog_new/scripts.html' %}
+{% endblock %}
+</body>
+
+</html>

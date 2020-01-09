@@ -1,0 +1,41 @@
+{% extends "Blog_new/base.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% block content %}
+
+
+    <section class="blog_area section-gap single-post-area">
+    <div class="container box_1170">
+    <div class="row">
+        <a class="col-lg-8 mb-5">
+            <div class="comments-area">
+                {% for users in user_list %}
+                    <div>
+                        <br><a href="{% url 'msg_list' users.id %}" style="left: auto">{{ users.username }}</a>
+                    </div>
+{#                    <div class="comment-list">#}
+{#                        <div class="single-comment justify-content-between d-flex">#}
+{#                            <div class="user justify-content-between d-flex">#}
+{#                                <div class="thumb">#}
+{#                                    <img src="{{ comment.author.profile.image.url }}" width="60px" height="60px" alt="">#}
+{#                                    <a href="{% url 'msg_list' users.id %}">{{ users.username }}</a><br>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+                {% endfor %}
+            </div>
+
+
+{% endblock content %}
+{% block sidebar %}
+
+{% endblock %}
+
+
+
+
+
+
+
+
